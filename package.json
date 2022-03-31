@@ -8,6 +8,7 @@
     "start": "webpack serve --config webpack.common.js --open",
     "build": "webpack --config webpack.common.js",
     "test": "jest",
+    "watch": "jest --watch *.test.js",
     "prepare": "husky install"
   },
   "repository": {
