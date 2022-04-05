@@ -1,32 +1,35 @@
 const GameBoard = () => {
-  let boardState;
-  const ships = [];
-
-  const init = () => {
-    state = Array.from({ length: 100 }, () => ({
-      isHit: false,
-      hasShip: false,
-    }));
+  const state = {
+    board: [],
   };
 
-  const addShip = (shipObj, positionArr) => {
-    ships.push(shipObj);
-    positionArr.forEach(position => {
-      state[position].hasShip = true;
+  const addShip = (type, positions) => {
+    // make ship
+    positions.forEach(index => {
+      state.board[index].hasShip = true;
+      state.board[index].shipId = type;
     });
   };
 
-  // const getShips = () => [...ships];
+  const attack = position => {
+    state.board[position].isHit = true;
+  };
 
+  const init = () => {
+    state.board = Array.from({ length: 100 }, () => ({
+      hasShip: false,
+      isHit: false,
+      shipId: null,
+    }));
+  };
   init();
 
   return {
-    getState,
-    addShip,
-    // return copy of state without reference to heap
-    get state() {
-      return boardState.map(ele => ({ ...ele }));
+    get board() {
+      return state.board.map(ele => ({ ...ele }));
     },
+    addShip,
+    attack,
   };
 };
 

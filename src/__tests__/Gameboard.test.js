@@ -1,58 +1,55 @@
 import GameBoard from '../scripts/factories/GameBoard';
 
-describe('Creating new GameBoard object', () => {
-  xtest('create empty board with 100 cells', () => {
-    const board = GameBoard();
-    expect(board.state.length).toBe(100);
+describe('GameBoard factory function', () => {
+  let board;
+
+  beforeEach(() => {
+    board = GameBoard();
   });
 
-  xtest('board cell is object {isHit: false, hasShip: false}', () => {
-    const board = GameBoard();
-    const cells = board.state.every(
-      ele => ele.isHit === false && ele.hasShip === false
-    );
-    expect(cells).toBe(true);
-  });
-});
+  test('board creation', () => {
+    const fakeBoard = Array.from({ length: 100 }, () => ({
+      hasShip: false,
+      isHit: false,
+      shipId: null,
+    }));
 
-describe('Add ship method', () => {
-  xtest('pass ship object and positions array', () => {
-    const board = GameBoard();
-    board.addShip({}, [0, 1, 2, 3]);
-    expect().toBe();
+    expect(board.board).toEqual(fakeBoard);
+    expect(board.board).not.toBe(fakeBoard);
   });
 
-  xtest('test is ship places on correct position', () => {
-    const board = GameBoard();
+  test('place ship, board positions has hasShip flag', () => {
+    const shipType = 'battleship';
     const shipPosition = [0, 1, 2, 3];
-    board.addShip({}, shipPosition);
-    const boardShipPosition = shipPosition.every(
-      pos => board.getState()[pos].hasShip === true
+    board.addShip(shipType, shipPosition);
+    expect(shipPosition.every(pos => board.board[pos].hasShip === true)).toBe(
+      true
     );
-    expect(boardShipPosition).toBe(true);
+    expect(
+      shipPosition.every(pos => board.board[pos].shipId === shipType)
+    ).toBe(true);
   });
 
-  // xtest('return error if ships collide');
-  // xtest('return error if ship is place outside');
-  // xtest('check vertical placement');
-  // xtest('check horizontal placement');
-  // xtest('return error if ship is not placed vertically or horizontally');
+  test.todo('trying to place ship on top of  another ship');
+
+  test.todo('trying to place ship outside boundaries horizontally');
+
+  test.todo('trying to place ship outside boundaries vertically');
+
+  test.todo('place all 5 ships randomly without collision or boundaries error');
+
+  test('attack that misses ship', () => {
+    board.addShip('submarine', [0, 1, 2]);
+    board.attack(3);
+    expect(board.board[3].isHit).toBe(true);
+    expect(board.board[3].hasShip).toBe(false);
+  });
+
+  test.todo('attack that hits ship');
+
+  test.todo('attack to cell that is already hit');
+
+  test.todo('attack to outside boundaries');
+
+  test.todo('all ship sunken');
 });
-
-// describe('Get board state', () => {
-//   xtest('cant change state outside of class');
-//   xtest('return correct state for 1 ship');
-//   xtest('return correct state for all 5 ships');
-//   xtest('return correct state for missed fire');
-//   xtest('return correct position for damaged ships');
-// });
-
-// describe('receiveAttack method', () => {
-//   xtest('update state for attack');
-//   xtest('pass position to corresponding ship');
-//   xtest('keep track of all missed shoots');
-// });
-
-// describe('All ships sunken', () => {
-//   xtest('check if all ships are sunken');
-// });
