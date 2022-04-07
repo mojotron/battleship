@@ -1,4 +1,5 @@
 const generatePositions = options => {
+  // TODO how to pass options
   if (
     options.position < 0 ||
     options.position > options.boardSize * options.boardSize - 1

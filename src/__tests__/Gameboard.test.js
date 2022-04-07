@@ -81,14 +81,39 @@ describe('GameBoard factory function', () => {
   test('all ship sunken', () => {
     board.placeShip('patrol', [0, 1]);
     board.placeShip('submarine', [2, 3, 4]);
-    // board.attack(0);
-    // board.attack(1);
-    // board.attack(2);
-    // board.attack(3);
+    board.attack(0);
+    board.attack(1);
+    board.attack(2);
+    board.attack(3);
     expect(board.allSunk()).toBe(false);
-    // board.attack(4);
-    // expect(board.allSunk()).toBe(true);
+    board.attack(4);
+    expect(board.allSunk()).toBe(true);
   });
 
-  test.todo('place all 5 ships randomly without collision or boundaries error');
+  test('place all 5 ships randomly without collision or boundaries error', () => {
+    board.createAndPlaceShips();
+    const ships = board.board.filter(c => c.hasShip).length;
+    const carrier = board.board.filter(c => c.shipId === 'carrier').length;
+    const battleship = board.board.filter(
+      c => c.shipId === 'battleship'
+    ).length;
+    const destroyer = board.board.filter(c => c.shipId === 'destroyer').length;
+    const submarine = board.board.filter(c => c.shipId === 'submarine').length;
+    const patrol = board.board.filter(c => c.shipId === 'patrol').length;
+    const restNum =
+      board.board.length -
+      carrier -
+      battleship -
+      destroyer -
+      submarine -
+      patrol;
+    const rest = board.board.filter(c => !c.hasShip).length;
+    expect(ships).toEqual(17);
+    expect(carrier).toEqual(5);
+    expect(battleship).toEqual(4);
+    expect(destroyer).toEqual(3);
+    expect(submarine).toEqual(3);
+    expect(patrol).toEqual(2);
+    expect(rest).toEqual(restNum);
+  });
 });
