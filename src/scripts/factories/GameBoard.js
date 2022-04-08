@@ -50,50 +50,22 @@ const GameBoard = () => {
 
   const generateShip = type => {
     try {
-      if (state.ships[type]) return;
-      // create random number 0-99
-      // TODO make range
-      const position = Math.floor(Math.random() * 100) - SHIPS[type].length;
-      // check if there is ship
-      if (state.board[position].hasShip) generateShip(type);
-      const randNum = Math.random();
-      // randomize direction
-      const directions =
-        randNum > 0.5 ? ['horizontal', 'vertical'] : ['vertical', 'horizontal'];
-      // try to put to direction 1
-      const positionsA = generatePositions({
-        position,
+      const positions = generatePositions({
+        position: Math.floor(Math.random() * 100),
         length: SHIPS[type].length,
         boardSize: 10,
-        direction: directions[0],
+        direction: Math.random() > 0.5 ? 'horizontal' : 'vertical',
       });
-      if (positionsA) {
-        placeShip(type, positionsA);
-        return;
-      }
-      // try to put to direction 2
-      const positionsB = generatePositions({
-        position,
-        length: SHIPS[type].length,
-        boardSize: 10,
-        direction: directions[1],
-      });
-      if (Array.isArray(positionsB)) {
-        placeShip(type, positionsB);
-        return;
-      }
+      placeShip(type, positions);
     } catch (error) {
-      // try again
+      // try again if some error is thrown
       console.log(error.message);
       if (!state.ships[type]) generateShip(type);
     }
   };
 
   const createAndPlaceShips = () => {
-    // TODO ship types to config
-    const types = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrol'];
-    // TODO only ships not in object state ships
-    types.forEach(type => generateShip(type));
+    for (const shipType of Object.keys(SHIPS)) generateShip(shipType);
   };
 
   const init = () => {
