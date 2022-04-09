@@ -1,3 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&family=Rubik+Puddles&family=Teko&display=swap');
+
 html {
-  background-color: crimson;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-family: 'Teko', monospace;
+  font-weight: 400;
 }
+:root {
+  --blue-color: #006994;
+  --ultra-light-blue: #e7feff;
+}
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+body {
+  height: 100vh;
+  font-weight: 100vw;
+  background-color: var(--ultra-light-blue);
+}
+.btn {
+  font-family: 'Rubik Moonrocks', 'Teko', monospace;
+  display: block;
+  height: 4rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 3rem;
+  border: 2px solid var(--blue-color);
+
+  color: var(--blue-color);
+  background-color: var(--ultra-light-blue);
+  padding: 0 2rem;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease-in-out;
+}
+.btn:hover {
+  color: var(--ultra-light-blue);
+  background-color: var(--blue-color);
+}
+/* main wrapper */
+.main-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+/* header */
+.header {
+  padding: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header__heading {
+  text-transform: uppercase;
+  font-family: 'Rubik Puddles', 'Teko', monospace;
+  color: var(--blue-color);
+  font-size: 5rem;
+}
+/* new game modal */
+.new-game {
+  min-height: 30rem;
+  display: flex;
+  justify-content: center;
+}
+/* footer */
