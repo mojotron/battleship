@@ -9,6 +9,7 @@ html {
 :root {
   --blue-color: #006994;
   --ultra-light-blue: #e7feff;
+  --sea-cell-blue: #2fd1fa;
 }
 *,
 *::after,
@@ -76,8 +77,8 @@ body {
 }
 /* game board grid */
 .game-board-grid {
-  height: 50rem;
-  width: 50rem;
+  height: 35rem;
+  width: 35rem;
   background-color: var(--ultra-light-blue);
 }
 .grid {
@@ -87,6 +88,15 @@ body {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-gap: 0.2rem;
-  background-color: var(--blue-color);
+}
+.grid__cell {
+  background-color: var(--sea-cell-blue);
+  border-radius: 0.25rem;
+}
+.ship-placement {
+  background-color: rgb(175, 186, 196);
+}
+.invalid-ship-placement {
+  background-color: red;
 }
 /* footer */

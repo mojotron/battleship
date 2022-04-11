@@ -105,7 +105,7 @@ describe('generate board position for ship placement', () => {
   test('invalid vertical placement outside first column', () => {
     const options = {
       position: 5,
-      length: 4,
+      length: 5,
       boardSize: 5,
       direction: 'vertical',
     };

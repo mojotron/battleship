@@ -9,8 +9,9 @@ const generatePositions = options => {
   if (options.direction === 'horizontal') {
     const rowIndex = Math.floor(options.position / options.boardSize);
     const rowMaxValue = rowIndex * options.boardSize + options.boardSize - 1;
-    if (options.position + options.length > rowMaxValue)
+    if (options.position + options.length - 1 > rowMaxValue) {
       throw new Error('☢️ Invalid horizontal placement, outside row');
+    }
   }
 
   if (options.direction === 'vertical') {
@@ -18,7 +19,9 @@ const generatePositions = options => {
     const columnMaxValue =
       (options.boardSize - 1) * options.boardSize + columnIndex;
     if (
-      options.position + options.length * options.boardSize >
+      options.position +
+        options.length * options.boardSize -
+        options.boardSize >
       columnMaxValue
     ) {
       throw new Error('☢️ Invalid vertical placement, outside column');
