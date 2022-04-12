@@ -13,6 +13,7 @@
     "import/prefer-default-export": "off",
     "no-undef": "off",
     "no-restricted-syntax": "warn",
-    "no-useless-catch": "off"
+    "no-useless-catch": "off",
+    "no-param-reassign": "off"
   }
 }

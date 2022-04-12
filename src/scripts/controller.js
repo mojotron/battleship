@@ -1,79 +1,97 @@
 import '../styles/main.css';
-import view from './views/view';
-import newGameView from './views/newGameView';
-import gridView from './views/gridView';
-import generatePositions from './generate-positions';
+import { SHIPS } from './config';
 import Player from './factories/Player';
-import shipPlacementView from './views/shipPlacementView';
+import generatePositions from './generate-positions';
 
-const state = {
-  player1: null,
-  player2: null,
-  currentPlayer: null,
+const gameWrapper = document.querySelector('.game-wrapper');
+const ships = ['patrol', 'submarine', 'destroyer', 'battleship', 'carrier'];
+const temp = Player();
 
-  placement: {
-    ships: ['patrol', 'submarine', 'destroyer', 'battleship', 'carrier'],
-    direction: 'horizontal',
-    positions: [],
-  },
+const fillGrid = function (data) {
+  return data
+    .map(
+      (ele, i) => `
+          <div 
+            class="grid__cell ${ele.hasShip ? 'cell--ship' : ''}"
+            data-position="${i}"
+          ></div>`
+    )
+    .join('');
+};
+const createGrid = function (id, data) {
+  return `
+    <div class="grid" data-${id}>
+      ${fillGrid(data)}
+    </div>
+  `;
 };
 
-const controlNewGame = () => {
-  // replace display to board picking
-  const markup =
-    gridView.generateMarkdown(state.player1.board) +
-    shipPlacementView.generateMarkup();
-  view.render(markup);
+const removeShipPlacement = () =>
+  document
+    .querySelectorAll('.ship-placement')
+    .forEach(node => node.classList.remove('ship-placement'));
 
-  const controlChangeDirection = dir => {
-    state.placement.direction = dir;
-  };
-
-  shipPlacementView.addDirectionClickHandler(controlChangeDirection);
-
-  const grid = document.querySelector('.grid');
-
+const createGridHoverEventHandler = function (id, handler) {
+  const grid = document.querySelector(`[data-${id}]`);
   grid.addEventListener('mouseover', e => {
     try {
-      document
-        .querySelectorAll('.ship-placement')
-        .forEach(ele => ele.classList.remove('ship-placement'));
-
       const cell = e.target.closest('.grid__cell');
       if (!cell) return;
-
       const options = {
         position: +cell.dataset.position,
-        length: 5,
+        direction: 'horizontal',
+        length: SHIPS[ships.at(-1)].length,
         boardSize: 10,
-        direction: state.placement.direction,
       };
 
-      state.placement.positions = generatePositions(options);
-
-      state.placement.positions.forEach(pos => {
-        document
-          .querySelector(`[data-position="${pos}"]`)
-          .classList.add('ship-placement');
-      });
+      const positions = generatePositions(options);
+      handler(positions);
     } catch (error) {
       console.log(error.message);
+      removeShipPlacement();
     }
   });
 };
 
-const init = () => {
-  state.player1 = Player();
-  view.render(newGameView.generateMarkdown());
-  newGameView.addStartGameClickHandler(controlNewGame);
+const controlGridHover = function (positions) {
+  removeShipPlacement();
+  positions.forEach(position => {
+    document
+      .querySelector([`[data-position="${position}"]`])
+      .classList.add('ship-placement');
+  });
 };
 
-init();
+const createGridAddShipHandler = function (id, handler) {
+  const grid = document.querySelector(`[data-${id}]`);
+  grid.addEventListener('click', e => {
+    const cell = e.target.closest('.grid__cell');
+    if (!cell) return;
+    handler(+cell.dataset.position);
+  });
+};
 
-// GAME flow
-// on load display loading screen
-// -> after selecting new game display grit for ship placement
-// -> after user places all ships
-// -> display 2 grids and start game loop
+const controlAddShip = position => {
+  try {
+    temp.createShip(position, 'horizontal', ships.at(-1));
+    ships.splice(-1, 1);
+    document.querySelector(`[data-placement]`).remove();
+    gameWrapper.insertAdjacentHTML(
+      'afterbegin',
+      createGrid('placement', temp.board)
+    );
+    if (ships.length === 0) alert('DONE');
+    createGridHoverEventHandler('placement', controlGridHover);
+    createGridAddShipHandler('placement', controlAddShip);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-// modal
+gameWrapper.insertAdjacentHTML(
+  'afterbegin',
+  createGrid('placement', temp.board)
+);
+
+createGridHoverEventHandler('placement', controlGridHover);
+createGridAddShipHandler('placement', controlAddShip);
