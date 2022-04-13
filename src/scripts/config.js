@@ -5,3 +5,8 @@ export const SHIPS = {
   submarine: { name: 'submarine', length: 3 },
   patrol: { name: 'patrol', length: 2 },
 };
+
+export const DIRECTIONS = {
+  horizontal: '→',
+  vertical: '↓',
+};
