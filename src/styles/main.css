@@ -100,3 +100,6 @@ body {
 }
 /* ship placement */
 /* footer */
+.hidden {
+  display: none;
+}

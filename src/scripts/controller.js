@@ -1,56 +1,23 @@
 import '../styles/main.css';
-import { SHIPS, DIRECTIONS } from './config';
+import { SHIPS, SHIP_TYPES } from './config';
 import Player from './factories/Player';
 import generatePositions from './generate-positions';
+import changeDirectionView from './views/changeDirectionView';
+import gridView from './views/gridView';
 
 const state = {
+  ships: [...SHIP_TYPES],
   direction: 'horizontal',
 };
 
 const gameWrapper = document.querySelector('.game-wrapper');
-const ships = ['patrol', 'submarine', 'destroyer', 'battleship', 'carrier'];
 const temp = Player();
 
-/* change direction btn */
-const changeDirectionClickHandler = function (handler) {
-  const btn = document.getElementById('change-direction');
-  btn.addEventListener('click', e => {
-    const direction =
-      e.target.dataset.direction === 'horizontal' ? 'vertical' : 'horizontal';
-    e.target.innerText = DIRECTIONS[direction];
-    e.target.dataset.direction = direction;
-    handler(direction);
-  });
-};
-const controlChangeDirection = function (direction) {
-  state.direction = direction;
-};
-
-changeDirectionClickHandler(controlChangeDirection);
-
-const fillGrid = function (data) {
-  return data
-    .map(
-      (ele, i) => `
-          <div 
-            class="grid__cell ${ele.hasShip ? 'cell--ship' : ''}"
-            data-position="${i}">
-          </div>`
-    )
-    .join('');
-};
-const createGrid = function (id, data) {
-  return `
-    <div class="grid" data-${id}>
-      ${fillGrid(data)}
-    </div>
-  `;
-};
-
-const removeShipPlacement = () =>
+const removeShipPlacement = function () {
   document
     .querySelectorAll('.ship-placement')
     .forEach(node => node.classList.remove('ship-placement'));
+};
 
 const removeInvalidShipPlacement = function () {
   document
@@ -65,7 +32,7 @@ const addInvalidShipPlacement = function (position) {
     .classList.add('invalid-ship-placement');
 };
 
-const createGridHoverEventHandler = function (id, handler) {
+const createGridHoverEventHandler = function (id, stateShips, handler) {
   const grid = document.querySelector(`[data-${id}]`);
   let position;
   grid.addEventListener('mouseover', e => {
@@ -79,7 +46,7 @@ const createGridHoverEventHandler = function (id, handler) {
       const options = {
         position,
         direction: state.direction,
-        length: SHIPS[ships.at(-1)].length,
+        length: SHIPS[stateShips.at(-1)].length,
         boardSize: 10,
       };
 
@@ -87,7 +54,6 @@ const createGridHoverEventHandler = function (id, handler) {
 
       handler(positions);
     } catch (error) {
-      console.log(error.message);
       removeShipPlacement();
       addInvalidShipPlacement(position);
     }
@@ -119,30 +85,38 @@ const createGridAddShipHandler = function (id, handler) {
 
 const controlAddShip = position => {
   try {
-    temp.createShip(position, state.direction, ships.at(-1));
-    ships.splice(-1, 1);
+    temp.createShip(position, state.direction, state.ships.at(-1));
+    state.ships.splice(-1, 1);
     document.querySelector(`[data-placement]`).remove();
     gameWrapper.insertAdjacentHTML(
       'afterbegin',
-      createGrid('placement', temp.board)
+      gridView.createGrid('placement', temp.board)
     );
 
-    if (ships.length === 0) alert('DONE');
+    if (state.ships.length === 0) {
+      changeDirectionView.toggleDisplay();
+      alert('DONE');
+    }
 
-    createGridHoverEventHandler('placement', controlGridHover);
+    createGridHoverEventHandler('placement', state.ships, controlGridHover);
     createGridAddShipHandler('placement', controlAddShip);
     createGridMouseLeaveHandler('placement', removeShipPlacement);
   } catch (error) {
-    console.log(error.message);
-    addInvalidShipPlacement(position);
+    gridView.addInvalidShipPlacement(position);
   }
 };
 
+const controlChangeDirection = function (direction) {
+  state.direction = direction;
+};
+
+// init
 gameWrapper.insertAdjacentHTML(
   'afterbegin',
-  createGrid('placement', temp.board)
+  gridView.createGrid('placement', temp.board)
 );
-
-createGridHoverEventHandler('placement', controlGridHover);
+createGridHoverEventHandler('placement', state.ships, controlGridHover);
 createGridAddShipHandler('placement', controlAddShip);
 createGridMouseLeaveHandler('placement', removeShipPlacement);
+changeDirectionView.toggleDisplay();
+changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);

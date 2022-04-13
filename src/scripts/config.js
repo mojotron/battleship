@@ -10,3 +10,11 @@ export const DIRECTIONS = {
   horizontal: '→',
   vertical: '↓',
 };
+
+export const SHIP_TYPES = [
+  'patrol',
+  'submarine',
+  'destroyer',
+  'battleship',
+  'carrier',
+];
