@@ -1,26 +1,8 @@
 import { SHIPS } from '../config';
 import generatePositions from '../generate-positions';
+import shipPlacementView from './shipPlacementView';
 
 const GridView = () => {
-  const removeShipPlacement = function () {
-    document
-      .querySelectorAll('.ship-placement')
-      .forEach(node => node.classList.remove('ship-placement'));
-  };
-
-  const removeInvalidShipPlacement = function () {
-    document
-      .querySelector('.invalid-ship-placement')
-      ?.classList.remove('invalid-ship-placement');
-  };
-
-  const addInvalidShipPlacement = function (position) {
-    removeInvalidShipPlacement();
-    document
-      .querySelector(`[data-position="${position}"]`)
-      .classList.add('invalid-ship-placement');
-  };
-
   const fillGrid = data =>
     data
       .map(
@@ -38,12 +20,12 @@ const GridView = () => {
       </div>`;
 
   // Event handlers
-  const addPlacementHoverHandler = (gridId, stateShips, handler) => {
+  const addPlacementHoverHandler = (gridId, state, handler) => {
     const grid = document.querySelector(`[data-${gridId}]`);
     let position;
     grid.addEventListener('mouseover', e => {
       try {
-        removeInvalidShipPlacement();
+        shipPlacementView.removeInvalidShipPlacement();
         const cell = e.target.closest('.grid__cell');
 
         if (!cell) return;
@@ -52,7 +34,7 @@ const GridView = () => {
         const options = {
           position,
           direction: state.direction,
-          length: SHIPS[stateShips.at(-1)].length,
+          length: SHIPS[state.ships.at(-1)].length,
           boardSize: 10,
         };
 
@@ -60,14 +42,31 @@ const GridView = () => {
 
         handler(positions);
       } catch (error) {
-        removeShipPlacement();
-        addInvalidShipPlacement(position);
+        shipPlacementView.removeShipPlacement();
+        shipPlacementView.addInvalidShipPlacement(position);
       }
     });
   };
+
+  const addGridMouseLeaveHandler = (id, handler) => {
+    const grid = document.querySelector(`[data-${id}]`);
+    grid.addEventListener('mouseleave', handler);
+  };
+
+  const addGridAddShipHandler = (id, handler) => {
+    const grid = document.querySelector(`[data-${id}]`);
+    grid.addEventListener('click', e => {
+      const cell = e.target.closest('.grid__cell');
+      if (!cell) return;
+      handler(+cell.dataset.position);
+    });
+  };
+
   return {
     createGrid,
     addPlacementHoverHandler,
+    addGridMouseLeaveHandler,
+    addGridAddShipHandler,
   };
 };
 
