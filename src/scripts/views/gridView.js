@@ -62,11 +62,22 @@ const GridView = () => {
     });
   };
 
+  const addClickAttackHandler = (id, handler) => {
+    const grid = document.querySelector(`[data-${id}]`);
+    grid.addEventListener('click', e => {
+      const cell = e.target.closest('.grid__cell');
+      if (!cell) return;
+      if (cell.classList.contains('cell--hit')) return;
+      handler(+cell.dataset.position);
+    });
+  };
+
   return {
     createGrid,
     addPlacementHoverHandler,
     addGridMouseLeaveHandler,
     addGridAddShipHandler,
+    addClickAttackHandler,
   };
 };
 
