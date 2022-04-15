@@ -1,5 +1,6 @@
 import '../styles/main.css';
 import { SHIP_TYPES } from './config';
+import newGameView from './views/newGameView';
 import Player from './factories/Player';
 import changeDirectionView from './views/changeDirectionView';
 import gridView from './views/gridView';
@@ -50,6 +51,15 @@ const initShipPlacement = () => {
   );
 };
 
-changeDirectionView.toggleDisplay();
-changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
-initShipPlacement();
+const controlNewGame = () => {
+  newGameView.toggleDisplay();
+  changeDirectionView.toggleDisplay();
+  changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
+  initShipPlacement();
+};
+
+const init = () => {
+  newGameView.toggleDisplay();
+  newGameView.addNewGameClickHandler(controlNewGame);
+};
+init();
