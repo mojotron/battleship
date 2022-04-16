@@ -3,20 +3,31 @@ import generatePositions from '../generate-positions';
 import shipPlacementView from './shipPlacementView';
 
 const GridView = () => {
-  const fillGrid = data =>
+  const shipCell = () => 'cell--ship';
+  const hitCell = () => 'cell--hit';
+  const shipHitCell = () => 'cell--shipHit';
+
+  const cellCoordinator = (ships, cellData) => {
+    if (ships && cellData.hasShip) return shipCell();
+    if (cellData.hasShip && cellData.isHit) return shipHitCell();
+    if (!cellData.hasShip && cellData.isHit) return hitCell();
+    return '';
+  };
+
+  const fillGrid = (data, ships) =>
     data
       .map(
         (ele, i) => `
             <div 
-              class="grid__cell ${ele.hasShip ? 'cell--ship' : ''}"
+              class="grid__cell ${cellCoordinator(ships, ele)}"
               data-position="${i}">
             </div>`
       )
       .join('');
 
-  const createGrid = (id, data) =>
+  const createGrid = (id, data, ships = true) =>
     `<div class="grid" data-${id}>
-        ${fillGrid(data)}
+        ${fillGrid(data, ships)}
       </div>`;
 
   // Event handlers

@@ -1,20 +1,19 @@
 import '../styles/main.css';
 import { SHIP_TYPES } from './config';
-import newGameView from './views/newGameView';
 import Player from './factories/Player';
 import AiPlayer from './factories/AiPlayer';
+import newGameView from './views/newGameView';
 import changeDirectionView from './views/changeDirectionView';
 import gridView from './views/gridView';
 import shipPlacementView from './views/shipPlacementView';
+import gameView from './views/gameView';
 
 const state = {
   ships: [...SHIP_TYPES],
   direction: 'horizontal',
+  player: Player(),
+  enemy: AiPlayer(),
 };
-
-const gameWrapper = document.querySelector('.game-wrapper');
-const temp = Player();
-const enemy = AiPlayer();
 
 const controlGridHover = function (positions) {
   shipPlacementView.addShipPlacement(positions);
@@ -22,11 +21,10 @@ const controlGridHover = function (positions) {
 
 const controlAddShip = position => {
   try {
-    temp.createShip(position, state.direction, state.ships.at(-1));
+    state.player.createShip(position, state.direction, state.ships.at(-1));
     state.ships.splice(-1, 1);
     if (state.ships.length === 0) {
       changeDirectionView.toggleDisplay();
-      // alert('DONE');
       initShipBattle();
       return; // TODO better exit
     }
@@ -40,13 +38,9 @@ const controlChangeDirection = function (direction) {
   state.direction = direction;
 };
 
-// init
 const initShipPlacement = () => {
-  document.querySelector(`[data-placement]`)?.remove(); // TODO
-  gameWrapper.insertAdjacentHTML(
-    'afterbegin',
-    gridView.createGrid('placement', temp.board)
-  );
+  gameView.removeGrid('placement');
+  gameView.renderGrid(gridView.createGrid('placement', state.player.board));
   gridView.addPlacementHoverHandler('placement', state, controlGridHover);
   gridView.addGridAddShipHandler('placement', controlAddShip);
   gridView.addGridMouseLeaveHandler(
@@ -63,22 +57,19 @@ const controlNewGame = () => {
 };
 
 const initShipBattle = () => {
-  document.querySelector('[data-placement]').remove();
-
-  gameWrapper.insertAdjacentHTML(
-    'afterbegin',
-    gridView.createGrid('enemy', enemy.board)
-  );
-  gameWrapper.insertAdjacentHTML(
-    'afterbegin',
-    gridView.createGrid('player', temp.board)
-  );
-
+  gameView.removeGrid('placement');
+  gameView.renderGrid(gridView.createGrid('enemy', state.enemy.board, false));
+  gameView.renderGrid(gridView.createGrid('player', state.player.board));
   gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
 const controlAttack = position => {
-  alert(position);
+  state.enemy.receiveAttack(position);
+  gameView.removeGrid('enemy');
+  gameView.removeGrid('player');
+  gameView.renderGrid(gridView.createGrid('enemy', state.enemy.board, false));
+  gameView.renderGrid(gridView.createGrid('player', state.player.board));
+  gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
 const init = () => {

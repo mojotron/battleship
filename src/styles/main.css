@@ -89,9 +89,19 @@ body {
 .grid__cell {
   background-color: var(--sea-cell-blue);
   border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .cell--ship {
   background-color: rgb(119, 130, 131);
+}
+.cell--hit::after {
+  content: '⚪';
+}
+.cell--shipHit::after {
+  content: '🔥';
+  font-size: 2rem;
 }
 .ship-placement {
   background-color: rgb(216, 252, 195);

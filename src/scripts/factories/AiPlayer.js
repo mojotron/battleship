@@ -12,6 +12,10 @@ const AiPlayer = () => {
     return attackPosition.pop();
   };
 
+  const receiveAttack = position => {
+    playerBoard.attack(position);
+  };
+
   return {
     get board() {
       return playerBoard.board.map(cell => ({ ...cell }));
@@ -22,6 +26,7 @@ const AiPlayer = () => {
     },
 
     attack,
+    receiveAttack,
   };
 };
 
