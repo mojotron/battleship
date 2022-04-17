@@ -20,7 +20,15 @@ const Player = playerName => {
     }
   };
 
-  const attack = position => position;
+  const receiveAttack = position => {
+    try {
+      playerBoard.attack(position);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allSunk = () => playerBoard.allSunk();
 
   return {
     get nameId() {
@@ -32,8 +40,8 @@ const Player = playerName => {
     },
 
     createShip,
-
-    attack,
+    allSunk,
+    receiveAttack,
   };
 };
 

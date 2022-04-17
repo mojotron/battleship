@@ -38,4 +38,6 @@ describe('Computer player factory', () => {
     expect(attack3).toBeGreaterThanOrEqual(0);
     expect(attack3).toBeLessThan(100);
   });
+
+  test('receive attack', () => {});
 });

@@ -16,6 +16,8 @@ const AiPlayer = () => {
     playerBoard.attack(position);
   };
 
+  const allSunk = () => playerBoard.allSunk();
+
   return {
     get board() {
       return playerBoard.board.map(cell => ({ ...cell }));
@@ -27,6 +29,7 @@ const AiPlayer = () => {
 
     attack,
     receiveAttack,
+    allSunk,
   };
 };
 

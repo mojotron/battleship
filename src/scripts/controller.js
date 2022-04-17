@@ -49,7 +49,7 @@ const initShipPlacement = () => {
   );
 };
 
-const controlNewGame = () => {
+const controlStartGame = () => {
   newGameView.toggleDisplay();
   changeDirectionView.toggleDisplay();
   changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
@@ -65,6 +65,17 @@ const initShipBattle = () => {
 
 const controlAttack = position => {
   state.enemy.receiveAttack(position);
+  if (state.enemy.allSunk()) {
+    alert('PLAYER WON!');
+    controlNewGame();
+    return;
+  }
+  state.player.receiveAttack(state.enemy.attack());
+  if (state.player.allSunk()) {
+    alert('Computer WON!');
+    controlNewGame();
+    return;
+  }
   gameView.removeGrid('enemy');
   gameView.removeGrid('player');
   gameView.renderGrid(gridView.createGrid('enemy', state.enemy.board, false));
@@ -74,6 +85,12 @@ const controlAttack = position => {
 
 const init = () => {
   newGameView.toggleDisplay();
-  newGameView.addNewGameClickHandler(controlNewGame);
+  newGameView.addNewGameClickHandler(controlStartGame);
 };
 init();
+
+const controlNewGame = () => {
+  gameView.removeGrid('enemy');
+  gameView.removeGrid('player');
+  newGameView.toggleDisplay();
+};

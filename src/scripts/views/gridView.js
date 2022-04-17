@@ -5,10 +5,12 @@ import shipPlacementView from './shipPlacementView';
 const GridView = () => {
   const shipCell = () => 'cell--ship';
   const hitCell = () => 'cell--hit';
-  const shipHitCell = () => 'cell--shipHit';
+  const shipHitCell = () => `cell--shipHit`;
 
   const cellCoordinator = (ships, cellData) => {
-    if (ships && cellData.hasShip) return shipCell();
+    if (ships && cellData.hasShip && !cellData.isHit) return shipCell();
+    if (ships && cellData.hasShip && cellData.isHit)
+      return `${shipCell()} ${shipHitCell()}`;
     if (cellData.hasShip && cellData.isHit) return shipHitCell();
     if (!cellData.hasShip && cellData.isHit) return hitCell();
     return '';
