@@ -11,6 +11,8 @@ const GridView = () => {
     if (ships && cellData.hasShip && !cellData.isHit) return shipCell();
     if (ships && cellData.hasShip && cellData.isHit)
       return `${shipCell()} ${shipHitCell()}`;
+    if (!ships && cellData.hasShip && cellData.isHit && cellData.sunk)
+      return `${shipCell()} ${shipHitCell()}`;
     if (cellData.hasShip && cellData.isHit) return shipHitCell();
     if (!cellData.hasShip && cellData.isHit) return hitCell();
     return '';

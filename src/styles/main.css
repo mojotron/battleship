@@ -52,7 +52,7 @@ body {
 }
 /* header */
 .header {
-  padding: 5rem;
+  padding: 5rem 5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,6 +67,7 @@ body {
 .game-wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 /* new game modal */
@@ -80,8 +81,10 @@ body {
   margin: 1rem;
   background-color: var(--ultra-light-blue);
   display: grid;
-  height: 35rem;
-  width: 35rem;
+
+  height: 30rem;
+  width: 30rem;
+
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-gap: 0.2rem;
@@ -98,10 +101,11 @@ body {
 }
 .cell--hit::after {
   content: '⚪';
+  font-size: 0.9rem;
 }
 .cell--shipHit::after {
   content: '🔥';
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 .ship-placement {
   background-color: rgb(216, 252, 195);
@@ -113,4 +117,9 @@ body {
 /* footer */
 .hidden {
   display: none;
+}
+@media (min-width: 786px) {
+  .game-wrapper {
+    flex-direction: row;
+  }
 }

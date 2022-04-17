@@ -37,7 +37,17 @@ const GameBoard = () => {
       throw new Error('☢️ Invalid attack, cell already attacked');
     state.board[position].isHit = true;
     if (state.board[position].hasShip) {
-      state.ships[state.board[position].shipId].hit(position);
+      const shipType = state.board[position].shipId;
+      // add hit position to ship object
+      state.ships[shipType].hit(position);
+      // check if ship is sunk if is add sunk true to every cell on board with ship type
+      if (state.ships[shipType].isSunk()) {
+        state.board.forEach(cell => {
+          if (cell.shipId === shipType) {
+            cell.sunk = true;
+          }
+        });
+      }
     }
   };
 

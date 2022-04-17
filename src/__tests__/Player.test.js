@@ -72,9 +72,5 @@ describe('Player factory', () => {
         '☢️ Invalid vertical placement, outside column'
       );
     });
-    // attack enemy
-    test('attack enemy', () => {
-      expect(player.attack(15)).toBe(15);
-    });
   });
 });

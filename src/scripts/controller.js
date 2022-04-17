@@ -52,7 +52,7 @@ const initShipPlacement = () => {
 const controlStartGame = () => {
   newGameView.toggleDisplay();
   changeDirectionView.toggleDisplay();
-  changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
+
   initShipPlacement();
 };
 
@@ -86,11 +86,16 @@ const controlAttack = position => {
 const init = () => {
   newGameView.toggleDisplay();
   newGameView.addNewGameClickHandler(controlStartGame);
+  changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
 };
 init();
 
 const controlNewGame = () => {
   gameView.removeGrid('enemy');
+  state.enemy = AiPlayer();
   gameView.removeGrid('player');
+  state.player = Player();
   newGameView.toggleDisplay();
+  state.ships = [...SHIP_TYPES];
+  initShipPlacement();
 };
