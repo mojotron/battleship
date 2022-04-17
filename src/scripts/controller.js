@@ -1,19 +1,10 @@
 import '../styles/main.css';
-import { SHIP_TYPES } from './config';
-import Player from './factories/Player';
-import AiPlayer from './factories/AiPlayer';
+import * as model from './model';
 import newGameView from './views/newGameView';
 import changeDirectionView from './views/changeDirectionView';
 import gridView from './views/gridView';
 import shipPlacementView from './views/shipPlacementView';
 import gameView from './views/gameView';
-
-const state = {
-  ships: [...SHIP_TYPES],
-  direction: 'horizontal',
-  player: Player(),
-  enemy: AiPlayer(),
-};
 
 const controlGridHover = function (positions) {
   shipPlacementView.addShipPlacement(positions);
@@ -21,9 +12,13 @@ const controlGridHover = function (positions) {
 
 const controlAddShip = position => {
   try {
-    state.player.createShip(position, state.direction, state.ships.at(-1));
-    state.ships.splice(-1, 1);
-    if (state.ships.length === 0) {
+    model.state.player.createShip(
+      position,
+      model.state.direction,
+      model.state.ships.at(-1)
+    );
+    model.state.ships.splice(-1, 1);
+    if (model.state.ships.length === 0) {
       changeDirectionView.toggleDisplay();
       initShipBattle();
       return; // TODO better exit
@@ -35,13 +30,15 @@ const controlAddShip = position => {
 };
 
 const controlChangeDirection = function (direction) {
-  state.direction = direction;
+  model.state.direction = direction;
 };
 
 const initShipPlacement = () => {
   gameView.removeGrid('placement');
-  gameView.renderGrid(gridView.createGrid('placement', state.player.board));
-  gridView.addPlacementHoverHandler('placement', state, controlGridHover);
+  gameView.renderGrid(
+    gridView.createGrid('placement', model.state.player.board)
+  );
+  gridView.addPlacementHoverHandler('placement', model.state, controlGridHover);
   gridView.addGridAddShipHandler('placement', controlAddShip);
   gridView.addGridMouseLeaveHandler(
     'placement',
@@ -58,28 +55,32 @@ const controlStartGame = () => {
 
 const initShipBattle = () => {
   gameView.removeGrid('placement');
-  gameView.renderGrid(gridView.createGrid('enemy', state.enemy.board, false));
-  gameView.renderGrid(gridView.createGrid('player', state.player.board));
+  gameView.renderGrid(
+    gridView.createGrid('enemy', model.state.enemy.board, false)
+  );
+  gameView.renderGrid(gridView.createGrid('player', model.state.player.board));
   gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
 const controlAttack = position => {
-  state.enemy.receiveAttack(position);
-  if (state.enemy.allSunk()) {
+  model.state.enemy.receiveAttack(position);
+  if (model.state.enemy.allSunk()) {
     alert('PLAYER WON!');
     controlNewGame();
     return;
   }
-  state.player.receiveAttack(state.enemy.attack());
-  if (state.player.allSunk()) {
+  model.state.player.receiveAttack(model.state.enemy.attack());
+  if (model.state.player.allSunk()) {
     alert('Computer WON!');
     controlNewGame();
     return;
   }
   gameView.removeGrid('enemy');
   gameView.removeGrid('player');
-  gameView.renderGrid(gridView.createGrid('enemy', state.enemy.board, false));
-  gameView.renderGrid(gridView.createGrid('player', state.player.board));
+  gameView.renderGrid(
+    gridView.createGrid('enemy', model.state.enemy.board, false)
+  );
+  gameView.renderGrid(gridView.createGrid('player', model.state.player.board));
   gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
@@ -92,10 +93,8 @@ init();
 
 const controlNewGame = () => {
   gameView.removeGrid('enemy');
-  state.enemy = AiPlayer();
   gameView.removeGrid('player');
-  state.player = Player();
   newGameView.toggleDisplay();
-  state.ships = [...SHIP_TYPES];
+  model.initState(model.state.direction);
   initShipPlacement();
 };
