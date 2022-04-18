@@ -6,19 +6,16 @@ import gridView from './views/gridView';
 import shipPlacementView from './views/shipPlacementView';
 import gameView from './views/gameView';
 
-const controlGridHover = function (positions) {
+const controlGridHover = positions => {
+  // display ship while hovering before player decide where to place it
   shipPlacementView.addShipPlacement(positions);
 };
 
 const controlAddShip = position => {
   try {
-    model.state.player.createShip(
-      position,
-      model.state.direction,
-      model.state.ships.at(-1)
-    );
-    model.state.ships.splice(-1, 1);
-    if (model.state.ships.length === 0) {
+    model.addShip(position);
+
+    if (model.shipsEmpty()) {
       changeDirectionView.toggleDisplay();
       initShipBattle();
       return; // TODO better exit

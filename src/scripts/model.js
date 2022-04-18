@@ -16,4 +16,19 @@ export const initState = direction => {
   state.enemy = AiPlayer();
 };
 
+export const shipsEmpty = () => state.ships.length === 0;
+
+const popShip = () => {
+  if (shipsEmpty()) return -1;
+  return state.ships.pop();
+};
+
+export const addShip = position => {
+  try {
+    state.player.createShip(position, state.direction, popShip());
+  } catch (error) {
+    throw error;
+  }
+};
+
 initState('horizontal');
