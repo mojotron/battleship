@@ -31,4 +31,20 @@ export const addShip = position => {
   }
 };
 
+export const playerAttack = position => {
+  state.enemy.receiveAttack(position);
+};
+
+export const aiAttack = () => {
+  state.player.receiveAttack(state.enemy.attack());
+};
+
+export const checkSunkShips = playerStr => state[playerStr].allSunk();
+
+export const getBoard = playerStr => state[playerStr].board;
+
+export const changeDirection = direction => {
+  state.direction = direction;
+};
+
 initState('horizontal');
