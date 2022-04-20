@@ -23,6 +23,14 @@ body {
   font-weight: 100vw;
   background-color: var(--ultra-light-blue);
 }
+.button-wrapper,
+.game-message {
+  height: 8rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .btn {
   font-family: 'Rubik Moonrocks', 'Teko', monospace;
   display: block;
@@ -32,7 +40,6 @@ body {
   cursor: pointer;
   font-size: 3rem;
   border: 2px solid var(--blue-color);
-  margin: 3rem;
   color: var(--blue-color);
   background-color: var(--ultra-light-blue);
   padding: 0 2rem;
@@ -108,6 +115,10 @@ body {
   content: '🔥';
   font-size: 1.5rem;
 }
+.last-hit.cell--hit::after,
+.last-hit.cell--shipHit::after {
+  transform: scale(2.3);
+}
 .ship-placement {
   background-color: rgb(216, 252, 195);
 }
@@ -118,6 +129,14 @@ body {
 /* footer */
 .hidden {
   display: none;
+}
+/* message */
+.game-message {
+  padding: 2rem;
+}
+.game-message__text {
+  font-size: 4.5rem;
+  color: var(--blue-color);
 }
 @media (min-width: 786px) {
   .game-wrapper {

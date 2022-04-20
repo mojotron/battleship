@@ -7,6 +7,10 @@ export const state = {
   direction: '',
   player: {},
   enemy: {},
+  lastPosition: {
+    player: null,
+    enemy: null,
+  },
 };
 
 export const initState = direction => {
@@ -33,10 +37,13 @@ export const addShip = position => {
 
 export const playerAttack = position => {
   state.enemy.receiveAttack(position);
+  state.lastPosition.enemy = position;
 };
 
 export const aiAttack = () => {
-  state.player.receiveAttack(state.enemy.attack());
+  const position = state.enemy.attack();
+  state.player.receiveAttack(position);
+  state.lastPosition.player = position;
 };
 
 export const checkSunkShips = playerStr => state[playerStr].allSunk();

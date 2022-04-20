@@ -87,12 +87,19 @@ const GridView = () => {
     });
   };
 
+  const addLastHitStyle = (id, positionData) => {
+    const grid = document.querySelector(`[data-${id}]`);
+    const cell = grid.querySelector(`[data-position="${positionData}"]`);
+    cell.classList.add('last-hit');
+  };
+
   return {
     createGrid,
     addPlacementHoverHandler,
     addGridMouseLeaveHandler,
     addGridAddShipHandler,
     addClickAttackHandler,
+    addLastHitStyle,
   };
 };
 

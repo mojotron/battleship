@@ -79,7 +79,9 @@ const controlAttack = position => {
   gameView.renderGrid(
     gridView.createGrid('enemy', model.getBoard('enemy'), false)
   );
+  gridView.addLastHitStyle('enemy', model.state.lastPosition.enemy);
   gameView.renderGrid(gridView.createGrid('player', model.getBoard('player')));
+  gridView.addLastHitStyle('player', model.state.lastPosition.player);
   gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
