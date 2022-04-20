@@ -88,6 +88,7 @@ const GridView = () => {
   };
 
   const addLastHitStyle = (id, positionData) => {
+    if (positionData === null) return;
     const grid = document.querySelector(`[data-${id}]`);
     const cell = grid.querySelector(`[data-position="${positionData}"]`);
     cell.classList.add('last-hit');

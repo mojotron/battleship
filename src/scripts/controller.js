@@ -6,6 +6,7 @@ import gridView from './views/gridView';
 import shipPlacementView from './views/shipPlacementView';
 import gameView from './views/gameView';
 import messageView from './views/messageView';
+import overlayView from './views/overlayView';
 
 const controlGridHover = positions => {
   // display ship while hovering before player decide where to place it
@@ -44,58 +45,56 @@ const initShipPlacement = () => {
   );
 };
 
-const controlStartGame = () => {
-  newGameView.toggleDisplay();
-  changeDirectionView.toggleDisplay();
-  initShipPlacement();
+const controlGridBattleRender = (id, ships) => {
+  gameView.removeGrid(id);
+  gameView.renderGrid(gridView.createGrid(id, model.getBoard(id), ships));
+  gridView.addLastHitStyle(id, model.state.lastPosition[id]);
 };
 
 const initShipBattle = () => {
   gameView.removeGrid('placement');
-  gameView.renderGrid(
-    gridView.createGrid('enemy', model.getBoard('enemy'), false)
-  );
-  gameView.renderGrid(gridView.createGrid('player', model.getBoard('player')));
+  controlGridBattleRender('enemy'); // TODO add second para to hide ships
+  controlGridBattleRender('player');
   gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
 const controlAttack = position => {
   model.playerAttack(position);
-  if (model.checkSunkShips('enemy')) {
-    messageView.toggleDisplay();
-    messageView.changeText('Player WON!');
-    alert('PLAYER WON!');
-    controlNewGame();
-    return;
-  }
   model.aiAttack();
-  if (model.checkSunkShips('player')) {
-    alert('Computer WON!');
-    controlNewGame();
+  controlGridBattleRender('enemy'); // TODO add second para to hide ships
+  controlGridBattleRender('player');
+  gridView.addClickAttackHandler('enemy', controlAttack);
+
+  if (model.checkSunkShips('enemy')) {
+    messageView.show();
+    messageView.changeText('Player WON!');
+    newGameView.toggleDisplay();
+    overlayView.show();
     return;
   }
-  gameView.removeGrid('enemy');
-  gameView.removeGrid('player');
-  gameView.renderGrid(
-    gridView.createGrid('enemy', model.getBoard('enemy'), false)
-  );
-  gridView.addLastHitStyle('enemy', model.state.lastPosition.enemy);
-  gameView.renderGrid(gridView.createGrid('player', model.getBoard('player')));
-  gridView.addLastHitStyle('player', model.state.lastPosition.player);
-  gridView.addClickAttackHandler('enemy', controlAttack);
+  if (model.checkSunkShips('player')) {
+    messageView.show();
+    messageView.changeText('Computer WON!');
+    newGameView.toggleDisplay();
+    overlayView.show();
+  }
 };
-
-const init = () => {
-  newGameView.toggleDisplay();
-  newGameView.addNewGameClickHandler(controlStartGame);
-  changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
-};
-init();
 
 const controlNewGame = () => {
   gameView.removeGrid('enemy');
   gameView.removeGrid('player');
+  messageView.hide();
+  overlayView.hide();
   newGameView.toggleDisplay();
+  changeDirectionView.toggleDisplay();
   model.initState(model.state.direction);
-  initStartGame();
+  initShipPlacement();
 };
+
+const init = () => {
+  newGameView.toggleDisplay();
+  newGameView.addNewGameClickHandler(controlNewGame);
+  changeDirectionView.addChangeDirectionClickHandler(controlChangeDirection);
+};
+
+init();
