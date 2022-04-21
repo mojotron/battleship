@@ -59,24 +59,28 @@ const initShipBattle = () => {
 };
 
 const controlAttack = position => {
-  model.playerAttack(position);
-  model.aiAttack();
-  controlGridBattleRender('enemy'); // TODO add second para to hide ships
-  controlGridBattleRender('player');
-  gridView.addClickAttackHandler('enemy', controlAttack);
+  try {
+    model.playerAttack(position);
+    model.aiAttack();
+    controlGridBattleRender('enemy'); // TODO add second para to hide ships
+    controlGridBattleRender('player');
+    gridView.addClickAttackHandler('enemy', controlAttack);
 
-  if (model.checkSunkShips('enemy')) {
-    messageView.show();
-    messageView.changeText('Player WON!');
-    newGameView.toggleDisplay();
-    overlayView.show();
-    return;
-  }
-  if (model.checkSunkShips('player')) {
-    messageView.show();
-    messageView.changeText('Computer WON!');
-    newGameView.toggleDisplay();
-    overlayView.show();
+    if (model.checkSunkShips('enemy')) {
+      messageView.show();
+      messageView.changeText('Player WON!');
+      newGameView.toggleDisplay();
+      overlayView.show();
+      return;
+    }
+    if (model.checkSunkShips('player')) {
+      messageView.show();
+      messageView.changeText('Computer WON!');
+      newGameView.toggleDisplay();
+      overlayView.show();
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };
 

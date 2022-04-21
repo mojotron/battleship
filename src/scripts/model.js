@@ -29,15 +29,21 @@ const popShip = () => {
 
 export const addShip = position => {
   try {
-    state.player.createShip(position, state.direction, popShip());
+    // using at method before pop to avoid bug of popping ship if placement fails
+    state.player.createShip(position, state.direction, state.ships.at(-1));
+    popShip();
   } catch (error) {
     throw error;
   }
 };
 
 export const playerAttack = position => {
-  state.enemy.receiveAttack(position);
-  state.lastPosition.enemy = position;
+  try {
+    state.enemy.receiveAttack(position);
+    state.lastPosition.enemy = position;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const aiAttack = () => {

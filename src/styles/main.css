@@ -91,8 +91,11 @@ body {
   background-color: var(--ultra-light-blue);
   display: grid;
 
-  height: 30rem;
-  width: 30rem;
+  min-height: 30rem;
+  min-width: 30rem;
+
+  height: 45vmin;
+  width: 45vmin;
 
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
@@ -128,6 +131,27 @@ body {
 }
 /* ship placement */
 /* footer */
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.footer__info {
+  color: var(--blue-color);
+  padding: 0 0 1.5rem;
+  font-size: 2rem;
+  text-align: center;
+}
+.footer__info a,
+.footer__info a:visited {
+  color: var(--sea-cell-blue);
+}
+.footer__info a:hover {
+  color: rgb(51, 46, 46);
+}
 .hidden {
   display: none;
 }
@@ -148,6 +172,15 @@ body {
   width: 100vw;
   background: rgba(0, 0, 0, 0);
 }
+[data-enemy] .grid__cell {
+  cursor: crosshair;
+}
+[data-enemy] .cell--hit,
+[data-enemy] .cell--shipHit,
+[data-player] {
+  cursor: not-allowed;
+}
+
 @media (min-width: 786px) {
   .game-wrapper {
     flex-direction: row;
