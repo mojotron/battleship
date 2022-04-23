@@ -51,19 +51,30 @@ const controlGridBattleRender = (id, ships) => {
   gridView.addLastHitStyle(id, model.state.lastPosition[id]);
 };
 
-const initShipBattle = () => {
-  gameView.removeGrid('placement');
-  controlGridBattleRender('enemy'); // TODO add second para to hide ships
+const controlBattleRender = () => {
+  controlGridBattleRender('enemy', false);
   controlGridBattleRender('player');
-  gridView.addClickAttackHandler('enemy', controlAttack);
 };
 
-const controlAttack = position => {
+const initShipBattle = () => {
+  gameView.removeGrid('placement');
+  controlGridBattleRender('enemy', false);
+  controlGridBattleRender('player');
+  gridView.addClickAttackHandler('enemy', controlAttack);
+  gridView.addCurrentPlayerStyle('enemy');
+};
+
+const controlAttack = async position => {
   try {
     model.playerAttack(position);
+    controlBattleRender();
+    gridView.addCurrentPlayerStyle('player');
+    await new Promise(resolve => {
+      setTimeout(resolve, Math.random() * 1000 + 1000);
+    });
     model.aiAttack();
-    controlGridBattleRender('enemy'); // TODO add second para to hide ships
-    controlGridBattleRender('player');
+    controlBattleRender();
+    gridView.addCurrentPlayerStyle('enemy');
     gridView.addClickAttackHandler('enemy', controlAttack);
 
     if (model.checkSunkShips('enemy')) {

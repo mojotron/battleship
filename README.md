@@ -4,7 +4,7 @@ Goal of this project was learning about Test Driven Development. Project is buil
 
 This project is part of [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-battleship) Curriculum.
 
-[Play Battleship](). Try out and end result of the project.
+[Play Battleship](https://mojotron-battleship.netlify.app/). Try out and end result of the project.
 
 ## How to play
 
@@ -13,7 +13,7 @@ Battleship is a strategy type guessing game for two players (in case of this gam
 ### Game stages:
 
 1. Start new game - simply press 'New Game' button
-2. Ship placement - hover over the grid and place ships (see ship type table). To change direction of the ship press button with arrow on it. After placing all ships (one of each) battle stage is starting.
+2. Ship placement - hover over the grid and place ships (see ship type table) and click on cell to place ship. To change direction of the ship press button with arrow on it. After placing all ships (one of each) battle stage is starting.
 3. Battle - click on the cell of the enemy grid (right or bottom one, depending on screen size) to make attack at then spot. Wait for enemy to make his attack. Repeat until one player sunk all ship of the opponent player.
 
 | Ship type        | length |

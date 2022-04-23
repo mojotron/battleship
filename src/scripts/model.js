@@ -48,8 +48,12 @@ export const playerAttack = position => {
 
 export const aiAttack = () => {
   const position = state.enemy.attack();
-  state.player.receiveAttack(position);
   state.lastPosition.player = position;
+  const shipType = state.player.receiveAttack(position);
+  // TODO better ai attack algo
+  if (shipType) {
+    console.log(shipType, position);
+  }
 };
 
 export const checkSunkShips = playerStr => state[playerStr].allSunk();

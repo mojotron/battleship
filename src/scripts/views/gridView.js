@@ -94,6 +94,11 @@ const GridView = () => {
     cell.classList.add('last-hit');
   };
 
+  const addCurrentPlayerStyle = id => {
+    const grid = document.querySelector(`[data-${id}]`);
+    grid.classList.add('current-player');
+  };
+
   return {
     createGrid,
     addPlacementHoverHandler,
@@ -101,6 +106,7 @@ const GridView = () => {
     addGridAddShipHandler,
     addClickAttackHandler,
     addLastHitStyle,
+    addCurrentPlayerStyle,
   };
 };
 
