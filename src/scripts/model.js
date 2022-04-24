@@ -49,10 +49,11 @@ export const playerAttack = position => {
 export const aiAttack = () => {
   const position = state.enemy.attack();
   state.lastPosition.player = position;
-  const shipType = state.player.receiveAttack(position);
-  // TODO better ai attack algo
-  if (shipType) {
-    console.log(shipType, position);
+  // getting data for SearchAndSink
+  const { shipId, sunk } = state.player.receiveAttack(position);
+  if (shipId) {
+    // add ship to the enemy ship detection
+    state.enemy.attackReport(shipId, position, sunk || false);
   }
 };
 
