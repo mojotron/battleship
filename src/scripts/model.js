@@ -47,16 +47,12 @@ export const playerAttack = position => {
 };
 
 export const aiAttack = () => {
-  try {
-    const position = state.enemy.attack();
-    state.lastPosition.player = position;
-    // getting data for SearchAndSink
-    const { shipId, sunk } = state.player.receiveAttack(position);
-    // add ship to the enemy ship detection
-    state.enemy.attackReport(shipId, position, sunk || false);
-  } catch (error) {
-    console.log('🪃 BIG ERROR');
-  }
+  const position = state.enemy.attack();
+  state.lastPosition.player = position;
+  // getting data for SearchAndSink
+  const { shipId, sunk } = state.player.receiveAttack(position);
+  // add ship to the enemy ship detection
+  state.enemy.attackReport(shipId, position, sunk || false);
 };
 
 export const checkSunkShips = playerStr => state[playerStr].allSunk();

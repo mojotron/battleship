@@ -1,4 +1,4 @@
-import { shuffle } from '../halpers';
+import { shuffle } from '../helpers';
 
 const SearchAndSink = (shipId, startPosition) => {
   const searchStart = startPosition;
@@ -12,9 +12,8 @@ const SearchAndSink = (shipId, startPosition) => {
   };
 
   const changeDirection = () => {
-    if (directions.length === 0) alert('ouch');
     searchPosition = searchStart;
-    directions.pop();
+    if (directions.length > 0) directions.pop();
   };
 
   const getShipId = () => shipType;
