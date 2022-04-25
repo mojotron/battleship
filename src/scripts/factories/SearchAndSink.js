@@ -11,18 +11,10 @@ const SearchAndSink = (shipId, startPosition) => {
     return searchPosition;
   };
 
-  const attackReport = (ship, position, sunk) => {
-    if (sunk) {
-      return 1;
-    }
-    if (ship === null) {
-      directions.pop();
-      searchPosition = searchStart;
-    }
-    if (ship === shipType) {
-      searchPosition = position;
-    }
-    return -1;
+  const changeDirection = () => {
+    if (directions.length === 0) alert('ouch');
+    searchPosition = searchStart;
+    directions.pop();
   };
 
   const getShipId = () => shipType;
@@ -30,7 +22,7 @@ const SearchAndSink = (shipId, startPosition) => {
   return {
     getShipId,
     search,
-    attackReport,
+    changeDirection,
   };
 };
 
