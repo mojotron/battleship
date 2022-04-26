@@ -32,3 +32,8 @@ AI Player is simulating how would human player played the game to give more chal
 - installing and configuration Jest test runner for vanilla js project
 - how to write test (what to test and what not to test), pure functions test result, impure functions test side effects
 - simplify code by splitting it up in modules to reduce tightly coupled objects, and make it more testable
+- adding sound effects using JS
+
+## Resources
+
+Sound effects downloaded from [soundfishing](https://www.soundfishing.eu/) webpage.

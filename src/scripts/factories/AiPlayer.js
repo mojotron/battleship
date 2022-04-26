@@ -50,6 +50,8 @@ const AiPlayer = () => {
 
   const receiveAttack = position => {
     playerBoard.attack(position);
+    const { shipId, sunk } = playerBoard.board[position];
+    return { hit: !!shipId, sunk: !!sunk };
   };
 
   const allSunk = () => playerBoard.allSunk();

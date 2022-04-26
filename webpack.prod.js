@@ -11,6 +11,7 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.[contenthash].js',
     clean: true,
+    assetModuleFilename: 'sounds/[name][ext]',
   },
   plugins: [new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })],
   module: {

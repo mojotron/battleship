@@ -7,4 +7,9 @@ const shuffle = (...args) => {
   });
 };
 
-export { shuffle };
+const wait = ms =>
+  new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+
+export { shuffle, wait };

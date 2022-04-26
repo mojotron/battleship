@@ -39,8 +39,9 @@ export const addShip = position => {
 
 export const playerAttack = position => {
   try {
-    state.enemy.receiveAttack(position);
+    const obj = state.enemy.receiveAttack(position);
     state.lastPosition.enemy = position;
+    return obj;
   } catch (error) {
     throw error;
   }
@@ -53,6 +54,7 @@ export const aiAttack = () => {
   const { shipId, sunk } = state.player.receiveAttack(position);
   // add ship to the enemy ship detection
   state.enemy.attackReport(shipId, position, sunk || false);
+  return { sunk: sunk || false, hit: !!shipId };
 };
 
 export const checkSunkShips = playerStr => state[playerStr].allSunk();

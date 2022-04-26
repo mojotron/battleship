@@ -26,7 +26,7 @@ const Player = playerName => {
     } catch (error) {
       console.log(error);
     }
-    // TEMP for better ai attack, this line is for the model aiAttack()
+    // for better ai attack, this line is for the model aiAttack()
     const { shipId, sunk } = playerBoard.board[position];
     return { shipId, sunk };
   };

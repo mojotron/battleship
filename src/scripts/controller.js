@@ -7,6 +7,8 @@ import shipPlacementView from './views/shipPlacementView';
 import gameView from './views/gameView';
 import messageView from './views/messageView';
 import overlayView from './views/overlayView';
+import soundEffects from './sound-effects';
+import { wait } from './helpers';
 
 const controlGridHover = positions => {
   // display ship while hovering before player decide where to place it
@@ -66,16 +68,12 @@ const initShipBattle = () => {
 
 const controlAttack = async position => {
   try {
-    model.playerAttack(position);
+    const report = model.playerAttack(position);
+    soundEffects.coordinator(report);
+
+    await wait(Math.random() * 1000 + 1000);
+
     controlBattleRender();
-    gridView.addCurrentPlayerStyle('player');
-    await new Promise(resolve => {
-      setTimeout(resolve, Math.random() * 1000 + 1000);
-    });
-    model.aiAttack();
-    controlBattleRender();
-    gridView.addCurrentPlayerStyle('enemy');
-    gridView.addClickAttackHandler('enemy', controlAttack);
 
     if (model.checkSunkShips('enemy')) {
       messageView.show();
@@ -84,11 +82,25 @@ const controlAttack = async position => {
       overlayView.show();
       return;
     }
+
+    await wait(Math.random() * 1000 + 1000);
+
+    const reportAI = model.aiAttack();
+    soundEffects.coordinator(reportAI);
+    gridView.addCurrentPlayerStyle('player');
+
+    await wait(Math.random() * 1000 + 1000);
+
+    controlBattleRender();
+
+    gridView.addCurrentPlayerStyle('enemy');
+    gridView.addClickAttackHandler('enemy', controlAttack);
     if (model.checkSunkShips('player')) {
       messageView.show();
       messageView.changeText('Computer WON!');
       newGameView.toggleDisplay();
       overlayView.show();
+      return;
     }
   } catch (error) {
     console.log(error.message);
