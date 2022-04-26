@@ -1,6 +1,6 @@
 # Battleship Game
 
-Goal of this project was learning about Test Driven Development. Project is built by following rules of TDD. Write test first, describe what code is suppose to do. Make it pass with bare minimum logic. Refactor logic to make it more reusable. For this project only game logic was tested. Appearance of a webpage is non tested.
+The goal of this project was learning about Test Driven Development. Project is built by following rules of TDD. Write test first, describe what code is suppose to do. Make it pass with bare minimum logic. Refactor logic to make it more reusable. For this project only game logic was tested. Appearance of a webpage is not tested.
 
 This project is part of [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-battleship) Curriculum.
 
@@ -10,11 +10,11 @@ This project is part of [The Odin Project](https://www.theodinproject.com/lesson
 
 Battleship is a strategy type guessing game for two players (in case of this game implementation one player, playing against ai). It is played on ruled grids on which each player's fleet of warships are marked. The locations of the fleets are concealed from the other player. Players alternate turns calling "shots" at the other player's ships, and the objective of the game is to destroy the opposing player's fleet (learn more on the [wikipedia](<https://en.wikipedia.org/wiki/Battleship_(game)>)).
 
-### Game stages:
+### Game stages
 
-1. Start new game - simply press 'New Game' button
+1. Start new game - simply press 'New Game' button.
 2. Ship placement - hover over the grid and place ships (see ship type table) and click on cell to place ship. To change direction of the ship press button with arrow on it. After placing all ships (one of each) battle stage is starting.
-3. Battle - click on the cell of the enemy grid (right or bottom one, depending on screen size) to make attack at then spot. Wait for enemy to make his attack. Repeat until one player sunk all ship of the opponent player.
+3. Battle - click on the cell of the enemy grid (right or bottom one, depending on screen size) to make attack at that spot. Wait for enemy to make his attack. Repeat until one player sink all ships of the opponent player.
 
 | Ship type        | length |
 | ---------------- | :----: |
@@ -24,7 +24,7 @@ Battleship is a strategy type guessing game for two players (in case of this gam
 | submarine        |   3    |
 | patrol boat      |   2    |
 
-AI Player is simulating how would human player played the game to give more challenge.
+AI Player is simulating how would human player play the game to give more challenge.
 
 ## What have I learned
 
